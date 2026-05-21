@@ -3,8 +3,8 @@ db = db.getSiblingDB('spotify');
 // Завдання 1. Топ-10 виконавців за середньою популярністю
 // Знайдіть виконавців, у яких є хоча б 5 треків. Для кожного виконавця порахуйте середню популярність його треків. 
 // Потім відсортуйте за спаданням та виберіть топ-10 виконавців. Вивід повинен включати ім’я виконавця та його середню популярність.
-
-const results = db.tracks.aggregate([
+print("*********************** Завдання 1 *************************")
+const result_1 = db.tracks.aggregate([
     { $unwind: "$artists" },
 
     {
@@ -35,7 +35,7 @@ const results = db.tracks.aggregate([
 ]).toArray();
 
 print("Топ-10 виконавців за середньою популярністю:");
-printjson(results);
+printjson(result_1);
 
 
 // Завдання 2. Розподіл треків за настроєм
@@ -45,7 +45,8 @@ printjson(results);
 // високий valence + низька energy → calm
 // низький valence + низька energy → sad 
 // Порахуйте, скільки треків потрапило до кожної категорії, та виведіть таблицю з настроєм і кількістю треків.
-const results = db.tracks.aggregate([
+print("*********************** Завдання 2 *************************")
+const result_2 = db.tracks.aggregate([
     {
         $addFields: {
             mood: {
@@ -91,12 +92,13 @@ const results = db.tracks.aggregate([
     }
 ]).toArray();
 
-printjson(results);
+printjson(result_2);
 
 
 
 // Завдання 3. Найбільш «танцювальний» жанр
-const results = db.tracks.aggregate([
+print("*********************** Завдання 3 *************************")
+const result_3 = db.tracks.aggregate([
     {
         $group: {
             _id: "$track_genre",
@@ -122,4 +124,4 @@ const results = db.tracks.aggregate([
 ]).toArray();
 
 print("Найбільш «танцювальний» жанр:");
-printjson(results);
+printjson(result_3);

@@ -2,8 +2,8 @@ db = db.getSiblingDB('spotify');
 
 // Завдання 1. Треки для вечірки
 // Такі треки повинні мати високий danceability (вище 0.7) та високу енергію (також вище 0.7), а тривалість — від 3 до 5 хвилин (180000–300000 мс).
-
-const results = db.tracks.aggregate([
+print("*********************** Завдання 1 *************************")
+const result_1 = db.tracks.aggregate([
     {
         $match: {
             "audio_features.danceability": { $gt: 0.7 },
@@ -24,14 +24,15 @@ const results = db.tracks.aggregate([
     ]).toArray();
 
 print("Треки для вечірки:");
-printjson(results);
-print("Кількість знайдених треків:", results.length);
+printjson(result_1);
+print("Кількість знайдених треків:", result_1.length);
 
 
 // Завдання 2. Виконавці, у яких усі треки популярні
 // У артиста є мінімум 3 треки і при цьому мінімальна популярність цих треків становить 60% або вище.
 // Знайти топ-20 таких артистів, вивести ім’я артиста, кількість треків, мінімальну та середню популярність з точністю до одного знака після коми
-const results = db.tracks.aggregate([
+print("*********************** Завдання 2 *************************")
+const result_2 = db.tracks.aggregate([
     { $unwind: "$artists" },
 
     {
@@ -66,11 +67,12 @@ const results = db.tracks.aggregate([
 ]).toArray();
 
 print("Топ-20 популярних артистів:");
-printjson(results);
+printjson(result_2);
 
 
 // Завдання 3. Нетипові треки
-const results = db.tracks.aggregate([
+print("*********************** Завдання 3 *************************")
+const result_3 = db.tracks.aggregate([
     {
         $group: {
             _id: "$track_genre",
@@ -117,14 +119,15 @@ const results = db.tracks.aggregate([
     }
 ]).toArray();
 
-printjson(results);
+printjson(result_3);
 
 
 
 // Завдання 4: Треки для фонової роботи
 // Знайдіть треки: тихі (loudness < -10), з низькою мовленнєвою складовою (speechiness < 0,1), 
 // переважно інструментальні (instrumentalness > 0,5) і не містять explicit-контенту
-const results = db.tracks.aggregate([
+print("*********************** Завдання 4 *************************")
+const result_4 = db.tracks.aggregate([
     { 
         $match: {
             "audio_features.loudness": {$lt: -10},
@@ -144,5 +147,5 @@ const results = db.tracks.aggregate([
     }
 ]).toArray();
 
-printjson(results.slice(0, 5));
-print("Кількість фонових треків: ", results.length);
+printjson(result_4.slice(0, 5));
+print("Кількість фонових треків: ", result_4.length);

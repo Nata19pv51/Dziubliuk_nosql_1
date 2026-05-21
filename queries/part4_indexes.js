@@ -2,6 +2,7 @@ db = db.getSiblingDB('spotify');
 
 // Завдання 1. Аналіз запиту та індексація
 // Статистика БЕЗ індексу:
+print("*********************** Завдання 1 *************************")
 const statsBefore = db.tracks.find({
   track_genre: "pop",
   "audio_features.danceability": { $gte: 0.7 }
@@ -33,6 +34,7 @@ printjson(statsAfter.executionStats);
 // audio_features.speechiness та explicit. 
 // Щоб такі запити виконувалися ефективно, створіть складений індекс за цими полями та 
 // за допомогою explain() покажіть, що він використовується при виконанні пошуку.
+print("*********************** Завдання 2 *************************")
 db.tracks.createIndex({ 
     explicit: 1,
     "audio_features.instrumentalness": -1,
@@ -40,13 +42,13 @@ db.tracks.createIndex({
 });
 print("******************** Індекс створено успішно **************************");
 
-const statsAfter = db.tracks.find({
+const statsAfter_2 = db.tracks.find({
   explicit: true,
   "audio_features.speechiness": { $lte: 0.2 }
 }).sort({ "audio_features.instrumentalness": -1 }).explain("executionStats");
 
 print("***************** Статистика ПІСЛЯ створення індексу ******************");
-printjson(statsAfter.executionStats);
+printjson(statsAfter_2.executionStats);
 
 
 // Завдання 3. Покривний запит
